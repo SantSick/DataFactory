@@ -1,0 +1,17 @@
+{
+	"name": "ls_df_curso_ss",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "FileServer",
+		"typeProperties": {
+			"host": "C:\\Users\\Santiago\\Documents\\CursoDataFactory",
+			"userId": "Santiago",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiJiNmNkMjRmZi0xZmZiLTRmMzMtOWY2NC0wNGMwZTc1M2EwZmUiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "ir-curso-df-ss",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}

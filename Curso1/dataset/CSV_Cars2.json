@@ -9,7 +9,8 @@
 		"type": "DelimitedText",
 		"typeProperties": {
 			"location": {
-				"type": "FileServerLocation"
+				"type": "FileServerLocation",
+				"fileName": "cars2.csv"
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",

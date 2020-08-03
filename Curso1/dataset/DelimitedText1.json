@@ -10,7 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "FileServerLocation",
-				"fileName": "Copia_Datos.csv"
+				"fileName": "Copia_Datos"
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",

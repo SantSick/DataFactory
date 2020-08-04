@@ -16,7 +16,7 @@
 				}
 			},
 			{
-				"name": "If Condition1",
+				"name": "Set VariableParImpar",
 				"type": "IfCondition",
 				"dependsOn": [
 					{

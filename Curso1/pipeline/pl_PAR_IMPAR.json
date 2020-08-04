@@ -1,6 +1,14 @@
 {
 	"name": "pl_PAR_IMPAR",
 	"properties": {
+		"activities": [
+			{
+				"name": "VariableParImpar",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"userProperties": []
+			}
+		],
 		"annotations": []
 	}
 }

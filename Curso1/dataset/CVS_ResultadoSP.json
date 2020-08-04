@@ -10,6 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
+				"fileName": "Resultadodata.csv",
 				"container": "aci-cursodatasets"
 			},
 			"columnDelimiter": ",",

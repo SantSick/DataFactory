@@ -1,0 +1,12 @@
+{
+	"name": "Tbl_ServerTableSS",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_SqlNotebookSS",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": []
+	}
+}

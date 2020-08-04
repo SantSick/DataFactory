@@ -1,0 +1,21 @@
+{
+	"name": "CVS_ResultadoSP",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "dsl_abs_df_curso_ss",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"container": "aci-cursodatasets"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}

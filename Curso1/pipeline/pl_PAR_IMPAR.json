@@ -8,7 +8,11 @@
 				"dependsOn": [],
 				"userProperties": [],
 				"typeProperties": {
-					"variableName": ""
+					"variableName": "EsPar",
+					"value": {
+						"value": "@equals(mod(pipeline().parameters.Numero,2),0)",
+						"type": "Expression"
+					}
 				}
 			}
 		],

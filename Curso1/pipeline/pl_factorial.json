@@ -46,6 +46,26 @@
 									"type": "Expression"
 								}
 							}
+						},
+						{
+							"name": "Set Factorial",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Set multiplicacion",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "Factorial",
+								"value": {
+									"value": "@variables('AuxiliarFact')",
+									"type": "Expression"
+								}
+							}
 						}
 					]
 				}

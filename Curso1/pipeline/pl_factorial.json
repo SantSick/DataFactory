@@ -1,6 +1,14 @@
 {
 	"name": "pl_factorial",
 	"properties": {
+		"activities": [
+			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"userProperties": []
+			}
+		],
 		"parameters": {
 			"ipNumero": {
 				"type": "int",
@@ -9,6 +17,10 @@
 		},
 		"variables": {
 			"Factorial": {
+				"type": "String",
+				"defaultValue": "1"
+			},
+			"AuxiliarFact": {
 				"type": "String",
 				"defaultValue": "1"
 			}

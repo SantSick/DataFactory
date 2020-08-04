@@ -41,7 +41,7 @@
 							"typeProperties": {
 								"variableName": "Mensaje",
 								"value": {
-									"value": "El numero  {@pipeline().parameters.Numero} es Impar",
+									"value": "El numero  @{pipeline().parameters.Numero} es Impar",
 									"type": "Expression"
 								}
 							}
@@ -56,7 +56,7 @@
 							"typeProperties": {
 								"variableName": "Mensaje",
 								"value": {
-									"value": "El numero  {@pipeline().parameters.Numero} es Par",
+									"value": "El numero  @{pipeline().parameters.Numero} es Par",
 									"type": "Expression"
 								}
 							}

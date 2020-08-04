@@ -23,8 +23,7 @@
 		},
 		"variables": {
 			"EsPar": {
-				"type": "Boolean",
-				"defaultValue": "False"
+				"type": "Boolean"
 			}
 		},
 		"annotations": []

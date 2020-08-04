@@ -1,6 +1,18 @@
 {
 	"name": "pl_factorial",
 	"properties": {
+		"parameters": {
+			"ipNumero": {
+				"type": "int",
+				"defaultValue": 1
+			}
+		},
+		"variables": {
+			"Factorial": {
+				"type": "String",
+				"defaultValue": "1"
+			}
+		},
 		"annotations": []
 	}
 }

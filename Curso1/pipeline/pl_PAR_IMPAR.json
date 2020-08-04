@@ -6,12 +6,21 @@
 				"name": "VariableParImpar",
 				"type": "SetVariable",
 				"dependsOn": [],
-				"userProperties": []
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": ""
+				}
 			}
 		],
 		"parameters": {
 			"Numero": {
 				"type": "int"
+			}
+		},
+		"variables": {
+			"EsPar": {
+				"type": "Boolean",
+				"defaultValue": "False"
 			}
 		},
 		"annotations": []

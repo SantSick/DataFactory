@@ -31,7 +31,37 @@
 					"expression": {
 						"value": "@variables('EsPar')",
 						"type": "Expression"
-					}
+					},
+					"ifFalseActivities": [
+						{
+							"name": "Set variable1",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "Mensaje",
+								"value": {
+									"value": "El numero  {@pipeline().parameters.Numero} es Impar",
+									"type": "Expression"
+								}
+							}
+						}
+					],
+					"ifTrueActivities": [
+						{
+							"name": "Set Mensaje",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "Mensaje",
+								"value": {
+									"value": "El numero  {@pipeline().parameters.Numero} es Par",
+									"type": "Expression"
+								}
+							}
+						}
+					]
 				}
 			}
 		],
@@ -43,6 +73,9 @@
 		"variables": {
 			"EsPar": {
 				"type": "Boolean"
+			},
+			"Mensaje": {
+				"type": "String"
 			}
 		},
 		"annotations": []

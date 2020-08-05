@@ -23,7 +23,7 @@
 					"type": "Expression"
 				},
 				"folderPath": {
-					"value": "order/@dataset().directorioparss",
+					"value": "order/dataset().directorioparss",
 					"type": "Expression"
 				},
 				"container": "aci-ingestass"

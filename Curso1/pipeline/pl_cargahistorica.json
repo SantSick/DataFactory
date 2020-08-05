@@ -47,6 +47,7 @@
 						"value": "@array(activity('Lookup1').output.value)",
 						"type": "Expression"
 					},
+					"isSequential": true,
 					"activities": [
 						{
 							"name": "pl_carga_delta",

@@ -21,7 +21,10 @@
 						"storedProcedureParameters": {
 							"NOMBRE": {
 								"type": "String",
-								"value": "Santiago"
+								"value": {
+									"value": "@pipeline().parameters.NombreUsuario",
+									"type": "Expression"
+								}
 							}
 						},
 						"queryTimeout": "02:00:00"

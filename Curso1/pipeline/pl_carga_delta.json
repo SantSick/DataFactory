@@ -1,6 +1,73 @@
 {
 	"name": "pl_carga_delta",
 	"properties": {
+		"activities": [
+			{
+				"name": "Copy data1",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"sqlReaderQuery": {
+							"value": "@SELECT *\n  FROM [dbo].[orden]\nwhere EOMONTH(created_at) = '@{pipeline().parameters.FechaCorte}'",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00"
+					},
+					"sink": {
+						"type": "ParquetSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "Tbl_ServerTableSS",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "par_order_ss",
+						"type": "DatasetReference",
+						"parameters": {
+							"directorioparss": {
+								"value": "@formatDateTime(pipeline().parameters.FechaCorte,'yyyy/MM')",
+								"type": "Expression"
+							},
+							"nombrearchivoss": {
+								"value": "@pipeline().parameters.FechaCorte",
+								"type": "Expression"
+							}
+						}
+					}
+				]
+			}
+		],
+		"parameters": {
+			"FechaCorte": {
+				"type": "string"
+			}
+		},
 		"annotations": []
 	}
 }

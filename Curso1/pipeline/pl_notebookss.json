@@ -1,0 +1,74 @@
+{
+	"name": "pl_notebookss",
+	"properties": {
+		"activities": [
+			{
+				"name": "CopiaDatosSQLNSS",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"sqlReaderStoredProcedureName": "[dbo].[SP_TEST1]",
+						"storedProcedureParameters": {
+							"NOMBRE": {
+								"type": "String",
+								"value": {
+									"value": "@pipeline().parameters.NombreUsuario",
+									"type": "Expression"
+								}
+							}
+						},
+						"queryTimeout": "02:00:00"
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "Tbl_ServerTableSS",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "CVS_ResultadoSP",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"parameters": {
+			"NombreUsuario": {
+				"type": "string"
+			}
+		},
+		"annotations": []
+	}
+}

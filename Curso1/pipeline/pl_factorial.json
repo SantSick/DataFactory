@@ -1,0 +1,95 @@
+{
+	"name": "pl_factorial",
+	"properties": {
+		"activities": [
+			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "RangeList",
+					"value": {
+						"value": "@range(1,pipeline().parameters.ipNumero)",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "ForEachArray",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Set variable1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@variables('RangeList')",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "Set multiplicacion",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "AuxiliarFact",
+								"value": {
+									"value": "@string(mul( int(variables('Factorial')), item()))",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "Set Factorial",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Set multiplicacion",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "Factorial",
+								"value": {
+									"value": "@variables('AuxiliarFact')",
+									"type": "Expression"
+								}
+							}
+						}
+					]
+				}
+			}
+		],
+		"parameters": {
+			"ipNumero": {
+				"type": "int",
+				"defaultValue": 1
+			}
+		},
+		"variables": {
+			"Factorial": {
+				"type": "String",
+				"defaultValue": "1"
+			},
+			"AuxiliarFact": {
+				"type": "String",
+				"defaultValue": "1"
+			},
+			"RangeList": {
+				"type": "Array"
+			}
+		},
+		"annotations": []
+	}
+}

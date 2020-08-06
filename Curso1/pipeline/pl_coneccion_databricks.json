@@ -14,6 +14,9 @@
 					"secureInput": false
 				},
 				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/Shared/HolaDataFactory"
+				},
 				"linkedServiceName": {
 					"referenceName": "ls_cursoAzureDatabricksSS",
 					"type": "LinkedServiceReference"

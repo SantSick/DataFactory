@@ -57,16 +57,10 @@
 							"userProperties": [],
 							"typeProperties": {
 								"pipeline": {
-									"referenceName": "pl_carga_delta",
+									"referenceName": "pl_ejerciciolocacionsantiagos",
 									"type": "PipelineReference"
 								},
-								"waitOnCompletion": true,
-								"parameters": {
-									"FechaCorte": {
-										"value": "@item().FechaCorte",
-										"type": "Expression"
-									}
-								}
+								"waitOnCompletion": true
 							}
 						}
 					]

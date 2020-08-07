@@ -5,6 +5,9 @@
 			"referenceName": "ls_SqlNotebookSS",
 			"type": "LinkedServiceReference"
 		},
+		"folder": {
+			"name": "Ejercicios"
+		},
 		"annotations": [],
 		"type": "SqlServerTable",
 		"schema": []

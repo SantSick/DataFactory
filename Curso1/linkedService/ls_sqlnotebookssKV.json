@@ -1,0 +1,16 @@
+{
+	"name": "ls_sqlnotebookssKV",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "SqlServer",
+		"typeProperties": {
+			"connectionString": "integrated security=False;data source=NotebookSS;initial catalog=DemoDatabase;user id=testuser",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiI5OGJjNTg1Zi0zYWQ0LTQ0OTMtYjExMi0yODlmOTMwZWMxNjAiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "ir-curso-df-ss",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}

@@ -1,0 +1,35 @@
+{
+	"name": "tg_ejercicio_santiagos",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "pl_ejerciciosantiagos",
+					"type": "PipelineReference"
+				},
+				"parameters": {
+					"ColumnaFiltro": "Location_Type"
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Day",
+				"interval": 1,
+				"startTime": "2020-08-07T18:20:00.000Z",
+				"timeZone": "UTC",
+				"schedule": {
+					"minutes": [
+						20
+					],
+					"hours": [
+						6
+					]
+				}
+			}
+		}
+	}
+}

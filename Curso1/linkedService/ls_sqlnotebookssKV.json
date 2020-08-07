@@ -5,8 +5,15 @@
 		"annotations": [],
 		"type": "SqlServer",
 		"typeProperties": {
-			"connectionString": "integrated security=False;data source=NotebookSS;initial catalog=DemoDatabase;user id=testuser",
-			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiI5OGJjNTg1Zi0zYWQ0LTQ0OTMtYjExMi0yODlmOTMwZWMxNjAiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+			"connectionString": "Integrated Security=False;Data Source=NotebookSS;Initial Catalog=DemoDatabase;User ID=testuser",
+			"password": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "ls_kvsqlnotebook",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "testuser"
+			}
 		},
 		"connectVia": {
 			"referenceName": "ir-curso-df-ss",

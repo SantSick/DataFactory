@@ -60,7 +60,10 @@
 									"referenceName": "pl_ejerciciolocacionsantiagos",
 									"type": "PipelineReference"
 								},
-								"waitOnCompletion": true
+								"waitOnCompletion": true,
+								"parameters": {
+									"LocationType": "@item().LocationType"
+								}
 							}
 						}
 					]

@@ -6,7 +6,7 @@
 		"pipelines": [
 			{
 				"pipelineReference": {
-					"referenceName": "pl_ejerciciosantiagos",
+					"referenceName": "pl_ejerciciocargadatasantiagos",
 					"type": "PipelineReference"
 				},
 				"parameters": {

@@ -19,7 +19,10 @@
 			"location": {
 				"type": "AzureBlobStorageLocation",
 				"fileName": "Orden.csv",
-				"folderPath": "orden/@{dataset().locationtypess}",
+				"folderPath": {
+					"value": "orden/@{dataset().locationtypess}",
+					"type": "Expression"
+				},
 				"container": "aci-santiagosuntaxi"
 			},
 			"columnDelimiter": ",",

@@ -1,0 +1,10 @@
+{
+	"name": "ls_kvsqlnotebook",
+	"properties": {
+		"annotations": [],
+		"type": "AzureKeyVault",
+		"typeProperties": {
+			"baseUrl": "https://kv-datafactoryss.vault.azure.net/"
+		}
+	}
+}

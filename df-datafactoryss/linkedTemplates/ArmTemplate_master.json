@@ -1,0 +1,112 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "df-datafactoryss"
+		},
+		"dsl_abs_df_curso_ss_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'dsl_abs_df_curso_ss'"
+		},
+		"ls_SqlNotebookSS_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'ls_SqlNotebookSS'"
+		},
+		"ls_cursoAzureDatabricksSS_accessToken": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accessToken' of 'ls_cursoAzureDatabricksSS'"
+		},
+		"ls_df_curso_ss_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'ls_df_curso_ss'"
+		},
+		"ls_sqlnotebookssKV_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'ls_sqlnotebookssKV'"
+		},
+		"ls_df_curso_ss_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "C:\\Users\\Santiago\\Documents\\CursoDataFactory"
+		},
+		"ls_df_curso_ss_properties_typeProperties_userId": {
+			"type": "string",
+			"defaultValue": "Santiago"
+		},
+		"ls_kvsqlnotebook_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://kv-datafactoryss.vault.azure.net/"
+		},
+		"tc_ejecucionCH_properties_pl_cargahistorica_parameters_FechaDesde": {
+			"type": "string",
+			"defaultValue": "2020-01-01"
+		},
+		"tc_ejecucionCH_properties_pl_cargahistorica_parameters_FechaHasta": {
+			"type": "string",
+			"defaultValue": "2020-02-02"
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI to storage account containing linked ARM templates"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Sas token to storage account containing linked ARM templates"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"dsl_abs_df_curso_ss_connectionString": {
+						"value": "[parameters('dsl_abs_df_curso_ss_connectionString')]"
+					},
+					"ls_cursoAzureDatabricksSS_accessToken": {
+						"value": "[parameters('ls_cursoAzureDatabricksSS_accessToken')]"
+					},
+					"ls_SqlNotebookSS_connectionString": {
+						"value": "[parameters('ls_SqlNotebookSS_connectionString')]"
+					},
+					"ls_df_curso_ss_password": {
+						"value": "[parameters('ls_df_curso_ss_password')]"
+					},
+					"ls_sqlnotebookssKV_connectionString": {
+						"value": "[parameters('ls_sqlnotebookssKV_connectionString')]"
+					},
+					"ls_kvsqlnotebook_properties_typeProperties_baseUrl": {
+						"value": "[parameters('ls_kvsqlnotebook_properties_typeProperties_baseUrl')]"
+					},
+					"ls_df_curso_ss_properties_typeProperties_host": {
+						"value": "[parameters('ls_df_curso_ss_properties_typeProperties_host')]"
+					},
+					"ls_df_curso_ss_properties_typeProperties_userId": {
+						"value": "[parameters('ls_df_curso_ss_properties_typeProperties_userId')]"
+					},
+					"tc_ejecucionCH_properties_pl_cargahistorica_parameters_FechaDesde": {
+						"value": "[parameters('tc_ejecucionCH_properties_pl_cargahistorica_parameters_FechaDesde')]"
+					},
+					"tc_ejecucionCH_properties_pl_cargahistorica_parameters_FechaHasta": {
+						"value": "[parameters('tc_ejecucionCH_properties_pl_cargahistorica_parameters_FechaHasta')]"
+					}
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}

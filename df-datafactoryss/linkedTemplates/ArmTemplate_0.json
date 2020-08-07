@@ -1,0 +1,843 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "df-datafactoryss"
+		},
+		"dsl_abs_df_curso_ss_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'dsl_abs_df_curso_ss'"
+		},
+		"ls_cursoAzureDatabricksSS_accessToken": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accessToken' of 'ls_cursoAzureDatabricksSS'"
+		},
+		"ls_SqlNotebookSS_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'ls_SqlNotebookSS'"
+		},
+		"ls_df_curso_ss_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'ls_df_curso_ss'"
+		},
+		"ls_sqlnotebookssKV_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'ls_sqlnotebookssKV'"
+		},
+		"ls_kvsqlnotebook_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://kv-datafactoryss.vault.azure.net/"
+		},
+		"ls_df_curso_ss_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "C:\\Users\\Santiago\\Documents\\CursoDataFactory"
+		},
+		"ls_df_curso_ss_properties_typeProperties_userId": {
+			"type": "string",
+			"defaultValue": "Santiago"
+		},
+		"tc_ejecucionCH_properties_pl_cargahistorica_parameters_FechaDesde": {
+			"type": "string",
+			"defaultValue": "2020-01-01"
+		},
+		"tc_ejecucionCH_properties_pl_cargahistorica_parameters_FechaHasta": {
+			"type": "string",
+			"defaultValue": "2020-02-02"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/pl_PAR_IMPAR')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "VariableParImpar",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "EsPar",
+							"value": {
+								"value": "@equals(mod(pipeline().parameters.Numero,2),0)",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Set VariableParImpar",
+						"type": "IfCondition",
+						"dependsOn": [
+							{
+								"activity": "VariableParImpar",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"expression": {
+								"value": "@variables('EsPar')",
+								"type": "Expression"
+							},
+							"ifFalseActivities": [
+								{
+									"name": "Set variable1",
+									"type": "SetVariable",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "Mensaje",
+										"value": {
+											"value": "El numero  @{pipeline().parameters.Numero} es Impar",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"ifTrueActivities": [
+								{
+									"name": "Set Mensaje",
+									"type": "SetVariable",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "Mensaje",
+										"value": {
+											"value": "El numero  @{pipeline().parameters.Numero} es Par",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						}
+					}
+				],
+				"parameters": {
+					"Numero": {
+						"type": "int"
+					}
+				},
+				"variables": {
+					"EsPar": {
+						"type": "Boolean"
+					},
+					"Mensaje": {
+						"type": "String"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pl_factorial')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Set variable1",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "RangeList",
+							"value": {
+								"value": "@range(1,pipeline().parameters.ipNumero)",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "ForEachArray",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "Set variable1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@variables('RangeList')",
+								"type": "Expression"
+							},
+							"isSequential": true,
+							"activities": [
+								{
+									"name": "Set multiplicacion",
+									"type": "SetVariable",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "AuxiliarFact",
+										"value": {
+											"value": "@string(mul( int(variables('Factorial')), item()))",
+											"type": "Expression"
+										}
+									}
+								},
+								{
+									"name": "Set Factorial",
+									"type": "SetVariable",
+									"dependsOn": [
+										{
+											"activity": "Set multiplicacion",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "Factorial",
+										"value": {
+											"value": "@variables('AuxiliarFact')",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						}
+					}
+				],
+				"parameters": {
+					"ipNumero": {
+						"type": "int",
+						"defaultValue": 1
+					}
+				},
+				"variables": {
+					"Factorial": {
+						"type": "String",
+						"defaultValue": "1"
+					},
+					"AuxiliarFact": {
+						"type": "String",
+						"defaultValue": "1"
+					},
+					"RangeList": {
+						"type": "Array"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dsl_abs_df_curso_ss')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": "[parameters('dsl_abs_df_curso_ss_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ls_cursoAzureDatabricksSS')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureDatabricks",
+				"typeProperties": {
+					"domain": "https://adb-3370402401448293.13.azuredatabricks.net",
+					"accessToken": {
+						"type": "SecureString",
+						"value": "[parameters('ls_cursoAzureDatabricksSS_accessToken')]"
+					},
+					"existingClusterId": "0728-172028-okra247"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ls_kvsqlnotebook')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureKeyVault",
+				"typeProperties": {
+					"baseUrl": "[parameters('ls_kvsqlnotebook_properties_typeProperties_baseUrl')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ir-curso-df-ss')]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "SelfHosted",
+				"typeProperties": {}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pl_coneccion_databricks')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Notebook1",
+						"type": "DatabricksNotebook",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebookPath": "/Shared/HolaDataFactory"
+						},
+						"linkedServiceName": {
+							"referenceName": "ls_cursoAzureDatabricksSS",
+							"type": "LinkedServiceReference"
+						}
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_cursoAzureDatabricksSS')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/CVS_ResultadoSP')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "dsl_abs_df_curso_ss",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "Resultadodata.csv",
+						"container": "aci-cursodatasets"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/dsl_abs_df_curso_ss')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/par_order_ss')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "dsl_abs_df_curso_ss",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"directorioparss": {
+						"type": "string"
+					},
+					"nombrearchivoss": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": {
+							"value": "order_@{dataset().nombrearchivoss}.parquet",
+							"type": "Expression"
+						},
+						"folderPath": {
+							"value": "order/@{dataset().directorioparss}",
+							"type": "Expression"
+						},
+						"container": "aci-ingestass"
+					},
+					"compressionCodec": "snappy"
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/dsl_abs_df_curso_ss')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ls_SqlNotebookSS')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "SqlServer",
+				"typeProperties": {
+					"connectionString": "[parameters('ls_SqlNotebookSS_connectionString')]"
+				},
+				"connectVia": {
+					"referenceName": "ir-curso-df-ss",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/ir-curso-df-ss')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ls_df_curso_ss')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "FileServer",
+				"typeProperties": {
+					"host": "[parameters('ls_df_curso_ss_properties_typeProperties_host')]",
+					"userId": "[parameters('ls_df_curso_ss_properties_typeProperties_userId')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('ls_df_curso_ss_password')]"
+					}
+				},
+				"connectVia": {
+					"referenceName": "ir-curso-df-ss",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/ir-curso-df-ss')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ls_sqlnotebookssKV')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "SqlServer",
+				"typeProperties": {
+					"connectionString": "[parameters('ls_sqlnotebookssKV_connectionString')]"
+				},
+				"connectVia": {
+					"referenceName": "ir-curso-df-ss",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/ir-curso-df-ss')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/CSV_Cars2')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_df_curso_ss",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "FileServerLocation",
+						"fileName": "cars2.csv"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "Make",
+						"type": "String"
+					},
+					{
+						"name": "Model",
+						"type": "String"
+					},
+					{
+						"name": "Type",
+						"type": "String"
+					},
+					{
+						"name": "Origin",
+						"type": "String"
+					},
+					{
+						"name": "DriveTrain",
+						"type": "String"
+					},
+					{
+						"name": "Length",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_df_curso_ss')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DelimitedText1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_df_curso_ss",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "FileServerLocation",
+						"fileName": "Copia_Datos.csv"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_df_curso_ss')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Tbl_ServerTableSS')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_SqlNotebookSS",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [],
+				"typeProperties": {}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_SqlNotebookSS')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pl_carga_delta')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SqlServerSource",
+								"sqlReaderQuery": {
+									"value": "SELECT [akeed_order_id]\n      ,[customer_id]\n      ,[item_count]\n      ,[grand_total]\n      ,[payment_mode]\n      ,[promo_code]\n      ,[vendor_discount_amount]\n      ,[promo_code_discount_percentage]\n      ,[is_favorite]\n      ,[is_rated]\n      ,[vendor_rating]\n      ,[driver_rating]\n      ,[deliverydistance]\n      ,[preparationtime]\n      ,[delivery_time]\n      ,[order_accepted_time]\n      ,[driver_accepted_time]\n      ,[ready_for_pickup_time]\n      ,[picked_up_time]\n      ,[delivered_time]\n      ,[delivery_date]\n      ,[vendor_id]\n      ,[created_at]\n      ,[location_number]\n      ,[location_type]\n      ,[cid_x_loc_num_x_vendor]\n  FROM [dbo].[orden]\nwhere EOMONTH(created_at) = '@{pipeline().parameters.FechaCorte}'",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "ParquetSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "Tbl_ServerTableSS",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "par_order_ss",
+								"type": "DatasetReference",
+								"parameters": {
+									"directorioparss": {
+										"value": "@formatDateTime(pipeline().parameters.FechaCorte,'yyyy/MM')",
+										"type": "Expression"
+									},
+									"nombrearchivoss": {
+										"value": "@pipeline().parameters.FechaCorte",
+										"type": "Expression"
+									}
+								}
+							}
+						]
+					}
+				],
+				"parameters": {
+					"FechaCorte": {
+						"type": "string"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/Tbl_ServerTableSS')]",
+				"[concat(variables('factoryId'), '/datasets/par_order_ss')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pl_notebookss')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "CopiaDatosSQLNSS",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SqlServerSource",
+								"sqlReaderStoredProcedureName": "[[dbo].[SP_TEST1]",
+								"storedProcedureParameters": {
+									"NOMBRE": {
+										"type": "String",
+										"value": {
+											"value": "@pipeline().parameters.NombreUsuario",
+											"type": "Expression"
+										}
+									}
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "Tbl_ServerTableSS",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "CVS_ResultadoSP",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"parameters": {
+					"NombreUsuario": {
+						"type": "string"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/Tbl_ServerTableSS')]",
+				"[concat(variables('factoryId'), '/datasets/CVS_ResultadoSP')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pl_cargahistorica')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Lookup1",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SqlServerSource",
+								"sqlReaderQuery": {
+									"value": "DECLARE @MinDate DATE = '@{pipeline().parameters.FechaDesde}',\n        @MaxDate DATE = '@{pipeline().parameters.FechaHasta}';\nSELECT fechaCorte, MONTH(fechaCorte) as mesCorte, YEAR(fechaCorte) as anioCorte\nFROM\n(\n\tSELECT\n\tTOP (DATEDIFF(MONTH, @MinDate, @MaxDate) + 1)\n\tfechaCorte = EOMONTH(DATEADD(MONTH, ROW_NUMBER() OVER(ORDER BY a.object_id) - 1, @MinDate))\n\tFROM    sys.all_objects a\n\tCROSS JOIN sys.all_objects b\n)fechas\nORDER BY fechaCorte;",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "Tbl_ServerTableSS",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "ForEach1",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "Lookup1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@array(activity('Lookup1').output.value)",
+								"type": "Expression"
+							},
+							"isSequential": true,
+							"activities": [
+								{
+									"name": "pl_carga_delta",
+									"type": "ExecutePipeline",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"pipeline": {
+											"referenceName": "pl_carga_delta",
+											"type": "PipelineReference"
+										},
+										"waitOnCompletion": true,
+										"parameters": {
+											"FechaCorte": {
+												"value": "@item().FechaCorte",
+												"type": "Expression"
+											}
+										}
+									}
+								}
+							]
+						}
+					}
+				],
+				"parameters": {
+					"FechaDesde": {
+						"type": "string"
+					},
+					"FechaHasta": {
+						"type": "string"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/Tbl_ServerTableSS')]",
+				"[concat(variables('factoryId'), '/pipelines/pl_carga_delta')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/tc_ejecucionCH')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "pl_cargahistorica",
+							"type": "PipelineReference"
+						},
+						"parameters": {
+							"FechaDesde": "[parameters('tc_ejecucionCH_properties_pl_cargahistorica_parameters_FechaDesde')]",
+							"FechaHasta": "[parameters('tc_ejecucionCH_properties_pl_cargahistorica_parameters_FechaHasta')]"
+						}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Minute",
+						"interval": 5,
+						"startTime": "2020-08-07T16:42:00.000Z",
+						"timeZone": "UTC"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/pl_cargahistorica')]"
+			]
+		}
+	]
+}

@@ -1,0 +1,39 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "df-datafactoryss"
+		},
+		"dsl_abs_df_curso_ss_connectionString": {
+			"value": ""
+		},
+		"ls_SqlNotebookSS_connectionString": {
+			"value": ""
+		},
+		"ls_cursoAzureDatabricksSS_accessToken": {
+			"value": ""
+		},
+		"ls_df_curso_ss_password": {
+			"value": ""
+		},
+		"ls_sqlnotebookssKV_connectionString": {
+			"value": ""
+		},
+		"ls_df_curso_ss_properties_typeProperties_host": {
+			"value": "C:\\Users\\Santiago\\Documents\\CursoDataFactory"
+		},
+		"ls_df_curso_ss_properties_typeProperties_userId": {
+			"value": "Santiago"
+		},
+		"ls_kvsqlnotebook_properties_typeProperties_baseUrl": {
+			"value": "https://kv-datafactoryss.vault.azure.net/"
+		},
+		"tc_ejecucionCH_properties_pl_cargahistorica_parameters_FechaDesde": {
+			"value": "2020-01-01"
+		},
+		"tc_ejecucionCH_properties_pl_cargahistorica_parameters_FechaHasta": {
+			"value": "2020-02-02"
+		}
+	}
+}

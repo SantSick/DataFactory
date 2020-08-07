@@ -1,0 +1,31 @@
+{
+	"name": "ds_ejerciciosantiagos",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "dsl_abs_df_curso_ss",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"locationtypess": {
+				"type": "string"
+			}
+		},
+		"folder": {
+			"name": "Ejercicios"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "Orden.csv",
+				"folderPath": "orden/@{dataset().locationtypess}",
+				"container": "aci-santiagosuntaxi"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}

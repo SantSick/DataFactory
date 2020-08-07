@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Lookup1",
+				"name": "ExtraeValoresColumna",
 				"type": "Lookup",
 				"dependsOn": [],
 				"policy": {
@@ -32,11 +32,11 @@
 				}
 			},
 			{
-				"name": "ForEach1",
+				"name": "RecorreValores",
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "Lookup1",
+						"activity": "ExtraeValoresColumna",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -45,7 +45,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@array(activity('Lookup1').output.value)",
+						"value": "@array(activity('ExtraeValoresColumna').output.value)",
 						"type": "Expression"
 					},
 					"isSequential": true,

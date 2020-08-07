@@ -57,7 +57,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"pipeline": {
-									"referenceName": "pl_ejerciciolocacionsantiagos",
+									"referenceName": "pl_ejerciciocolumnasantiagos",
 									"type": "PipelineReference"
 								},
 								"waitOnCompletion": true,

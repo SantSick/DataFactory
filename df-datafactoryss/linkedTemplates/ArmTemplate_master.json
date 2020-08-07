@@ -47,6 +47,10 @@
 			"type": "string",
 			"defaultValue": "2020-02-02"
 		},
+		"tg_ejercicio_santiagos_properties_pl_ejerciciocargadatasantiagos_parameters_ColumnaFiltro": {
+			"type": "string",
+			"defaultValue": "Location_Type"
+		},
 		"containerUri": {
 			"type": "string",
 			"metadata": "URI to storage account containing linked ARM templates"
@@ -97,16 +101,39 @@
 					},
 					"ls_df_curso_ss_properties_typeProperties_userId": {
 						"value": "[parameters('ls_df_curso_ss_properties_typeProperties_userId')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "ArmTemplate_1",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_1.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
 					},
 					"tc_ejecucionCH_properties_pl_cargahistorica_parameters_FechaDesde": {
 						"value": "[parameters('tc_ejecucionCH_properties_pl_cargahistorica_parameters_FechaDesde')]"
 					},
 					"tc_ejecucionCH_properties_pl_cargahistorica_parameters_FechaHasta": {
 						"value": "[parameters('tc_ejecucionCH_properties_pl_cargahistorica_parameters_FechaHasta')]"
+					},
+					"tg_ejercicio_santiagos_properties_pl_ejerciciocargadatasantiagos_parameters_ColumnaFiltro": {
+						"value": "[parameters('tg_ejercicio_santiagos_properties_pl_ejerciciocargadatasantiagos_parameters_ColumnaFiltro')]"
 					}
 				}
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'ArmTemplate_0')]"
+			]
 		}
 	]
 }

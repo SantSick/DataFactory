@@ -34,6 +34,9 @@
 		},
 		"tc_ejecucionCH_properties_pl_cargahistorica_parameters_FechaHasta": {
 			"value": "2020-02-02"
+		},
+		"tg_ejercicio_santiagos_properties_pl_ejerciciocargadatasantiagos_parameters_ColumnaFiltro": {
+			"value": "Location_Type"
 		}
 	}
 }

@@ -1,0 +1,186 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "df-datafactoryss"
+		},
+		"tc_ejecucionCH_properties_pl_cargahistorica_parameters_FechaDesde": {
+			"type": "string",
+			"defaultValue": "2020-01-01"
+		},
+		"tc_ejecucionCH_properties_pl_cargahistorica_parameters_FechaHasta": {
+			"type": "string",
+			"defaultValue": "2020-02-02"
+		},
+		"tg_ejercicio_santiagos_properties_pl_ejerciciocargadatasantiagos_parameters_ColumnaFiltro": {
+			"type": "string",
+			"defaultValue": "Location_Type"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/pl_ejerciciocargadatasantiagos')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "ExtraeValoresColumna",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SqlServerSource",
+								"sqlReaderQuery": {
+									"value": "SELECT distinct @{pipeline().parameters.ColumnaFiltro} as location_type from orden where location_type is not null",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "Tbl_ServerTableSS",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "RecorreValores",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "ExtraeValoresColumna",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@array(activity('ExtraeValoresColumna').output.value)",
+								"type": "Expression"
+							},
+							"isSequential": true,
+							"activities": [
+								{
+									"name": "pl_ejerciciocolumnassantiagos",
+									"type": "ExecutePipeline",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"pipeline": {
+											"referenceName": "pl_ejerciciocolumnasantiagos",
+											"type": "PipelineReference"
+										},
+										"waitOnCompletion": true,
+										"parameters": {
+											"LocationType": "@item().location_type"
+										}
+									}
+								}
+							]
+						}
+					}
+				],
+				"parameters": {
+					"ColumnaFiltro": {
+						"type": "string"
+					}
+				},
+				"folder": {
+					"name": "Ejercicios"
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/tc_ejecucionCH')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "pl_cargahistorica",
+							"type": "PipelineReference"
+						},
+						"parameters": {
+							"FechaDesde": "[parameters('tc_ejecucionCH_properties_pl_cargahistorica_parameters_FechaDesde')]",
+							"FechaHasta": "[parameters('tc_ejecucionCH_properties_pl_cargahistorica_parameters_FechaHasta')]"
+						}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Minute",
+						"interval": 5,
+						"startTime": "2020-08-07T16:54:00.000Z",
+						"timeZone": "UTC"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/tg_ejercicio_santiagos')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "pl_ejerciciocargadatasantiagos",
+							"type": "PipelineReference"
+						},
+						"parameters": {
+							"ColumnaFiltro": "[parameters('tg_ejercicio_santiagos_properties_pl_ejerciciocargadatasantiagos_parameters_ColumnaFiltro')]"
+						}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Day",
+						"interval": 1,
+						"startTime": "2020-08-07T18:20:00.000Z",
+						"timeZone": "UTC",
+						"schedule": {
+							"minutes": [
+								20
+							],
+							"hours": [
+								6
+							]
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/pl_ejerciciocargadatasantiagos')]"
+			]
+		}
+	]
+}

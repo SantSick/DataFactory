@@ -1,0 +1,28 @@
+{
+	"name": "tc_ejecucionCH",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "pl_cargahistorica",
+					"type": "PipelineReference"
+				},
+				"parameters": {
+					"FechaDesde": "2020-01-01",
+					"FechaHasta": "2020-02-02"
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Minute",
+				"interval": 5,
+				"startTime": "2020-08-07T16:42:00.000Z",
+				"timeZone": "UTC"
+			}
+		}
+	}
+}

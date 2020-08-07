@@ -51,7 +51,7 @@
 					"isSequential": true,
 					"activities": [
 						{
-							"name": "pl_ejerciciosantiagos",
+							"name": "pl_ejerciciocolumnassantiagos",
 							"type": "ExecutePipeline",
 							"dependsOn": [],
 							"userProperties": [],

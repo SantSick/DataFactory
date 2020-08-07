@@ -2,7 +2,7 @@
 	"name": "tc_ejecucionCH",
 	"properties": {
 		"annotations": [],
-		"runtimeState": "Started",
+		"runtimeState": "Stopped",
 		"pipelines": [
 			{
 				"pipelineReference": {

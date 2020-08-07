@@ -18,7 +18,7 @@
 					"source": {
 						"type": "SqlServerSource",
 						"sqlReaderQuery": {
-							"value": "SELECT distinct location_type from orden where location_type is not null",
+							"value": "SELECT distinct @{pipeline().parameters.ColumnaFiltro} as location_type from orden where location_type is not null",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00",
@@ -62,7 +62,7 @@
 								},
 								"waitOnCompletion": true,
 								"parameters": {
-									"LocationType": "@item().LocationType"
+									"LocationType": "@item().location_type"
 								}
 							}
 						}
@@ -71,10 +71,7 @@
 			}
 		],
 		"parameters": {
-			"FechaDesde": {
-				"type": "string"
-			},
-			"FechaHasta": {
+			"ColumnaFiltro": {
 				"type": "string"
 			}
 		},
